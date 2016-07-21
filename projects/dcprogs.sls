@@ -19,7 +19,7 @@
 
 DCPROGS/HJCFIT:
   github.latest:
-    - target: {{workspace}}/wtf/src/{{project}}
+    - target: {{workspace}}/{{project}}/src/{{project}}
 
 dcprogs:
   funwith.modulefile:
