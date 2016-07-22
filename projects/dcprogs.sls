@@ -19,7 +19,8 @@
 
 DCPROGS/HJCFIT:
   github.latest:
-    - target: {{workspace}}/{{project}}/src/{{project}}
+    - target: {{workspace}}/src/{{project}}
+    - unless: test -d {{workspace}}/src/{{project}}/.git
 
 dcprogs:
   funwith.modulefile:
