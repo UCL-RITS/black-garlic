@@ -40,12 +40,8 @@ bico:
 {% if compiler == "gcc" %}
     - footer: |
         setenv("CXXFLAGS", "-Wall -Wno-parentheses -Wno-deprecated-declarations")
-        setenv("CXX", "g++-5")
-        setenv("CC", "gcc-5")
         setenv("BLA_VENDOR", "OpenBlas")
 {% elif compiler == "intel" %}
     - footer: |
-        setenv("CXX", "icpc")
-        setenv("CC", "icc")
         setenv("BLA_VENDOR", "OpenBlas")
 {% endif %}

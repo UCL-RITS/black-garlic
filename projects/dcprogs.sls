@@ -26,8 +26,3 @@ dcprogs:
   funwith.modulefile:
     - spack: *spack_packages
     - virtualenv: {{workspace}}/{{python}}
-{% if compiler == "gcc" %}
-    - footer: |
-        setenv("CXX", "g++-5")
-        setenv("CC", "gcc-5")
-{% endif %}
