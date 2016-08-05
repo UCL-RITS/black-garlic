@@ -6,13 +6,15 @@
 {{project}} spack packages:
   spack.installed:
     - pkgs: &spack_packages
-      - GreatCMakeCookoff
+      # - GreatCMakeCookoff
       - eigen -fftw -metis -mpfr -scotch -suitesparse %{{compiler}}
       - gbenchmark %{{compiler}}
       - Catch %{{compiler}}
       - spdlog %{{compiler}}
-{% if compiler in ["gcc", "intel"] %}
-      - openblas %gcc
+{% if compiler == "intel" %}
+      - mkl %{{compiler}}
+{% else %}
+      - openblas %{{compiler}}
 {% endif %}
 
 {{workspace}}/{{python}}:
@@ -37,11 +39,12 @@ bico:
   funwith.modulefile:
     - spack: *spack_packages
     - virtualenv: {{workspace}}/{{python}}
+    - cwd: {{workspace}}/src/sopt
 {% if compiler == "gcc" %}
     - footer: |
         setenv("CXXFLAGS", "-Wall -Wno-parentheses -Wno-deprecated-declarations")
         setenv("BLA_VENDOR", "OpenBlas")
-{% elif compiler == "intel" %}
+{% elif compiler != "intel" %}
     - footer: |
         setenv("BLA_VENDOR", "OpenBlas")
 {% endif %}

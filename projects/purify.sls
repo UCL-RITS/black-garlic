@@ -1,7 +1,8 @@
 {% set compiler = salt['pillar.get']('compiler', 'gcc') %}
-{% set python = salt['pillar.get']('python', 'python2') %}
+{% set python = salt['pillar.get']('python', 'python3') %}
 {% set project = sls.split('.')[-1] %}
 {% set workspace = salt['funwith.workspace'](project) %}
+{% set pyver = python[:-1] + "@" + python[-1] + ":" %}
 
 {% set openmp = "+openmp" if compiler != "clang" else "-openmp" %}
 {{project}} spack packages:
@@ -12,23 +13,24 @@
       - gbenchmark %{{compiler}}
       - Catch %{{compiler}}
       - spdlog %{{compiler}}
+      - wcslib %{{compiler}}
       - cfitsio %{{compiler}}
       - bison %{{compiler}}
-{% if python == "python2" %}
+      - openblas %{{compiler}} {{openmp}}
       - >
         boost %{{compiler}}
         +python  +singlethreaded
         -mpi -multithreaded -program_options -random -regex -serialization
         -signals -system -test -thread -wave
-        ^python@2
-{% else %}
-      - >
-        boost %{{compiler}}
-        +python  +singlethreaded
-        -mpi -multithreaded -program_options -random -regex -serialization
-        -signals -system -test -thread -wave
-        ^python@3
-{% endif %}
+        ^{{pyver}}
+     # - >
+     #   casacore %{{compiler}} +python +fftw
+     #   ^boost %{{compiler}}
+     #    +python  +singlethreaded
+     #    -mpi -multithreaded -program_options -random -regex -serialization
+     #    -signals -system -test -thread -wave
+     #   ^fftw {{openmp}}
+     #   ^openblas {{openmp}}
 
 
 {{project}} virtualenv:
@@ -69,7 +71,7 @@ astro-informatics/sopt:
     - prefix: {{workspace}}
     - cwd: {{workspace}}/src/{{project}}
     - spack: *spack_packages
-    - virtualenv: {{project}}/{{python}}
+    - virtualenv: {{workspace}}/{{python}}
 {% if compiler == "gcc" %}
     - footer: |
         setenv("CXXFLAGS", "-Wno-parentheses -Wno-deprecated-declarations")
@@ -88,4 +90,4 @@ astro-informatics/sopt:
     - source_hash: md5=69d0e8aa479585f1be65be2ca51a9e25
     - archive_format: tar
     - tar_options: z
-    - if_missing: {{workspace}}/data/WSRT_Measueres/ephemerides
+    - if_missing: {{workspace}}/data/WSRT_Measures/ephemerides

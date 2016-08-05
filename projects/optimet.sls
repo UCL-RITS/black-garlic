@@ -25,9 +25,15 @@ belos spack packages:
       - Catch %{{compiler}}
       - openmpi -pmi %{{compiler}}
       - gbenchmark %{{compiler}}
+{% if compiler == "intel" %}
+      - mkl %{{compiler}}
+      - scalapack +debug %{{compiler}}  ^openmpi ^mkl
+      - belos +mpi {{openmp}} +lapack %{{compiler}} ^openmpi ^mkl
+{% else %}
       - openblas %{{compiler}} {{openmp}}
-      - scalapack +debug %{{compiler}}  ^openmpi -pmi ^openblas {{openmp}}
-      - belos +mpi {{openmp}} +lapack %{{compiler}} ^openmpi -pmi ^openblas {{openmp}}
+      - scalapack +debug %{{compiler}}  ^openmpi ^openblas {{openmp}}
+      - belos +mpi {{openmp}} +lapack %{{compiler}} ^openmpi ^openblas {{openmp}}
+{% endif %}
       - >
         boost %{{compiler}}
         -python  +singlethreaded
@@ -53,6 +59,7 @@ belos spack packages:
 {{project}} modulefile:
   funwith.modulefile:
     - name: {{project}}
+    - cwd: {{workspace}}/src/{{project}}
     - virtualenv: {{workspace}}/{{python}}
     - spack: *spack_packages
     - footer: |
@@ -81,8 +88,6 @@ belos spack packages:
 JuliaLang/METADATA.jl:
   github.latest:
     - target: {{workspace}}/julia/v0.4/METADATA
-    - update_head: True
-    - force_fetch: True
 
 update julia packages:
   cmd.run:
