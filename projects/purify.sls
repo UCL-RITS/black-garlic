@@ -75,8 +75,6 @@ astro-informatics/sopt:
 {% if compiler == "gcc" %}
     - footer: |
         setenv("CXXFLAGS", "-Wno-parentheses -Wno-deprecated-declarations")
-        setenv("CXX", "g++-5")
-        setenv("CC", "gcc-5")
 {% endif %}
 
 
