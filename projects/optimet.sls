@@ -26,9 +26,9 @@ belos spack packages:
       - openmpi -pmi %{{compiler}}
       - gbenchmark %{{compiler}}
 {% if compiler == "intel" %}
-      - mkl %{{compiler}}
-      - scalapack +debug %{{compiler}}  ^openmpi ^mkl
-      - belos +mpi {{openmp}} +lapack %{{compiler}} ^openmpi ^mkl
+      - openblas %gcc {{openmp}}
+      - scalapack +debug %gcc  ^openmpi ^openblas {{openmp}}
+      - belos +mpi {{openmp}} +lapack %{{compiler}} ^openmpi ^openblas%gcc{{openmp}}
 {% else %}
       - openblas %{{compiler}} {{openmp}}
       - scalapack +debug %{{compiler}}  ^openmpi ^openblas {{openmp}}
