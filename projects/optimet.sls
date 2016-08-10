@@ -88,6 +88,7 @@ belos spack packages:
 JuliaLang/METADATA.jl:
   github.latest:
     - target: {{workspace}}/julia/v0.4/METADATA
+    - force_reset: True
 
 update julia packages:
   cmd.run:
