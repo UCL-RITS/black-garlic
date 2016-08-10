@@ -78,7 +78,7 @@ astro-informatics/sopt:
         setenv("CXXFLAGS", "-Wno-parentheses -Wno-deprecated-declarations")
 {% endif %}
 {% if compiler != "intel" %}
-        setenv("BLA_VENDOR", "OpenBlas")
+        setenv("BLA_VENDOR", "OpenBLAS")
 {% endif %}
 
 

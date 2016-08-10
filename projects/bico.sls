@@ -43,8 +43,8 @@ bico:
 {% if compiler == "gcc" %}
     - footer: |
         setenv("CXXFLAGS", "-Wall -Wno-parentheses -Wno-deprecated-declarations")
-        setenv("BLA_VENDOR", "OpenBlas")
+        setenv("BLA_VENDOR", "OpenBLAS")
 {% elif compiler != "intel" %}
     - footer: |
-        setenv("BLA_VENDOR", "OpenBlas")
+        setenv("BLA_VENDOR", "OpenBLAS")
 {% endif %}

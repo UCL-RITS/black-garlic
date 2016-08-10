@@ -63,7 +63,7 @@ belos spack packages:
     - virtualenv: {{workspace}}/{{python}}
     - spack: *spack_packages
     - footer: |
-        setenv("BLA_VENDOR", "OpenBlas")
+        setenv("BLA_VENDOR", "OpenBLAS")
 {% if compiler == "clang" %}
         setenv("LDFLAGS", "{{ldflags}}")
 {% elif compiler == "gcc" %}
