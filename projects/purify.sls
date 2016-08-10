@@ -2,7 +2,7 @@
 {% set python = salt['pillar.get']('python', 'python3') %}
 {% set project = sls.split('.')[-1] %}
 {% set workspace = salt['funwith.workspace'](project) %}
-{% set pyver = python[:-1] + "@" + python[-1] + ":" %}
+{% set pyver = python[:-1] + "@" + python[-1] %}
 
 {% set openmp = "+openmp" if compiler != "clang" else "-openmp" %}
 {{project}} spack packages:
