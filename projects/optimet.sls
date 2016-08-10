@@ -3,13 +3,13 @@
 {% set project = sls.split('.')[-1] %}
 {% set workspace = salt['funwith.workspace'](project) %}
 
-{% set openmp = "+openmp" if compiler != 'clang' else "-openmp"%}
+{% set openmp = "-openmp" if compiler != 'clang' else "-openmp"%}
 {% set ldflags = "/usr/local/Cellar/gcc/6.1.0/lib/gcc/6/libgfortran.dylib" %}
 
 {% if compiler == "clang" %}
 belos spack packages:
   spack.installed:
-    - name: belos +mpi {{openmp}} +lapack %{{compiler}} ^openmpi -pmi ^openblas {{openmp}}
+    - name: belos +mpi {{openmp}} +lapack %{{compiler}} ^openmpi ^openblas {{openmp}}
     - environ:
         LDFLAGS: {{ldflags}}
 {% endif %}
@@ -23,7 +23,7 @@ belos spack packages:
       - gsl %{{compiler}}
       - hdf5 -fortran -cxx -mpi %{{compiler}}
       - Catch %{{compiler}}
-      - openmpi -pmi %{{compiler}}
+      - openmpi %{{compiler}}
       - gbenchmark %{{compiler}}
 {% if compiler == "intel" %}
       - openblas %gcc {{openmp}}
