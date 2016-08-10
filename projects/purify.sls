@@ -16,7 +16,9 @@
       - wcslib %{{compiler}}
       - cfitsio %{{compiler}}
       - bison %{{compiler}}
+{% if compiler != "intel" %}
       - openblas %{{compiler}} {{openmp}}
+{% endif %}
       - >
         boost %{{compiler}}
         +python  +singlethreaded
@@ -72,9 +74,12 @@ astro-informatics/sopt:
     - cwd: {{workspace}}/src/{{project}}
     - spack: *spack_packages
     - virtualenv: {{workspace}}/{{python}}
-{% if compiler == "gcc" %}
     - footer: |
+{% if compiler == "gcc" %}
         setenv("CXXFLAGS", "-Wno-parentheses -Wno-deprecated-declarations")
+{% endif %}
+{% if compiler != "intel" %}
+        setenv("BLA_VENDOR", "OpenBlas")
 {% endif %}
 
 
