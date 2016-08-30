@@ -25,4 +25,5 @@ DCPROGS/HJCFIT:
 dcprogs:
   funwith.modulefile:
     - spack: *spack_packages
+    - cwd: {{workspace}}/src/{{project}}
     - virtualenv: {{workspace}}/{{python}}
