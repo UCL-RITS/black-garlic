@@ -8,18 +8,23 @@
     - pkgs: &spack_packages
       - GreatCMakeCookoff
       - boost %{{compiler}}
-      - openmpi@1.10.2 %{{compiler}} -tm
+      - openmpi %{{compiler}}
       - hdf5 %{{compiler}} -fortran -cxx +mpi ^openmpi
-      - gdb %{{compiler}}
-      - metis %{{compiler}} +double
-      - parmetis %{{compiler}} ^openmpi
+      - metis %{{compiler}} +real64
+      - parmetis %{{compiler}} ^openmpi ^metis +real64
       - Tinyxml %{{compiler}}
       - cppunit %{{compiler}}
       - CTemplate %{{compiler}}
 
 
+UCL-CCS/hemelb-dev:
+  github.latest:
+    - target: {{workspace}}/src/{{project}}
+    - unless: test -d {{workspace}}/src/{{project}}/.git
+
 {{workspace}}/src/hemelb/build/tmp:
-      file.directory
+      file.directory:
+        - makedirs: True
 
 
 {{workspace}}/{{python}}:
