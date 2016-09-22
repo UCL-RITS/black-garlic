@@ -1,10 +1,10 @@
-{% set compiler = salt['pillar.get']('compiler', 'gcc') %}
-{% set python = salt['pillar.get']('python', 'python3') %}
-{% set project = sls.split('.')[-1] %}
-{% set workspace = salt['funwith.workspace'](project) %}
+{% set compiler = salt["pillar.get"]("compiler", "gcc") %}
+{% set python = salt["pillar.get"]("python", "python3") %}
+{% set project = sls.split(".")[-1] %}
+{% set workspace = salt["funwith.workspace"](project) %}
 
-{% set openmp = "-openmp" if compiler != 'clang' else "-openmp"%}
-{% set ldflags = "/usr/local/Cellar/gcc/6.1.0/lib/gcc/6/libgfortran.dylib" %}
+{% set openmp = "-openmp" if compiler != "clang" else "-openmp"%}
+{% set ldflags = salt["file.find"](path="/usr/local/Cellar/gcc/*/lib/gcc/[0123456789]", maxdepth=0, name="libgfortran.dylib")[0] %}
 
 {% if compiler == "clang" %}
 belos spack packages:
@@ -78,7 +78,7 @@ belos spack packages:
     - target: {{workspace}}/src/benchmark_data
     - unless: test -d {{workspace}}/src/benchmark_data
 
-{{workspace}}/julia/v0.4/REQUIRE:
+{{workspace}}/julia/v0.5/REQUIRE:
   file.managed:
     - contents: |
         YAML
@@ -87,7 +87,7 @@ belos spack packages:
 
 JuliaLang/METADATA.jl:
   github.latest:
-    - target: {{workspace}}/julia/v0.4/METADATA
+    - target: {{workspace}}/julia/v0.5/METADATA
     - force_reset: True
 
 update julia packages:
