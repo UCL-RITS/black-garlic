@@ -8,6 +8,7 @@
 {{project}} spack packages:
   spack.installed:
     - pkgs: &spack_packages
+      - openmpi %{{compiler}}
       - fftw %{{compiler}} {{openmp}}
       - gbenchmark %{{compiler}}
       - Catch %{{compiler}}
