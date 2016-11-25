@@ -7,7 +7,7 @@
   spack.installed:
     - pkgs: &spack_packages
       # - GreatCMakeCookoff
-      - openmi %{{compiler}}
+      - openmpi %{{compiler}}
       - eigen -fftw -metis -mpfr -scotch -suitesparse %{{compiler}}
       - gbenchmark %{{compiler}}
       - Catch %{{compiler}}
