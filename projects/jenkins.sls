@@ -43,7 +43,7 @@ UCL-RITS/rcps-buildscripts:
       - pytest
       - pandas
       - cython
-      - python-jenkins==0.4.8
+      - python-jenkins
       - jenkins-job-builder
       - git+https://github.com/UCL/jenkjobs
 
@@ -88,7 +88,7 @@ UCL-RITS/rcps-buildscripts:
         [jenkins]
         user=mdavezac
         password={{salt['pillar.get']('jenkins_token:staging')}}
-        url=http://staging.development.rc.ucl.ac.uk/jenkins/
+        url=http://staging.development.rc.ucl.ac.uk/
 
 {{workspace}}/.production.ini:
   file.managed:
@@ -96,7 +96,7 @@ UCL-RITS/rcps-buildscripts:
         [jenkins]
         user=mdavezac
         password={{salt['pillar.get']('jenkins_token:production')}}
-        url=http://development.rc.ucl.ac.uk/jenkins/
+        url=http://jenkins.rc.ucl.ac.uk
 
 {{workspace}}/src/jenkins/branch.yaml:
   file.managed:
