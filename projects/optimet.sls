@@ -4,12 +4,13 @@
 {% set workspace = salt["funwith.workspace"](project) %}
 
 {% set openmp = "-openmp" if compiler != "clang" else "-openmp"%}
-{% set ldflags = salt["file.find"](path="/usr/local/Cellar/gcc/*/lib/gcc/[0123456789]", maxdepth=0, name="libgfortran.dylib")[0] %}
+{% set ldflags = salt["file.find"](path="/usr/local/Cellar/gcc/*/lib/gcc/[0123456789]", maxdepth=1, name="libgfortran.dylib")[0] %}
+{% set mpilib = "openmpi" %}
 
 {% if compiler == "clang" %}
 belos spack packages:
   spack.installed:
-    - name: belos +mpi {{openmp}} +lapack %{{compiler}} ^openmpi ^openblas {{openmp}}
+    - name: belos +mpi {{openmp}} +lapack %{{compiler}} ^{{mpilib}} ^openblas {{openmp}}
     - environ:
         LDFLAGS: {{ldflags}}
 {% endif %}
@@ -23,16 +24,16 @@ belos spack packages:
       - gsl %{{compiler}}
       - hdf5 -fortran -cxx -mpi %{{compiler}}
       - Catch %{{compiler}}
-      - openmpi %{{compiler}}
+      - {{mpilib}} %{{compiler}}
       - gbenchmark %{{compiler}}
 {% if compiler == "intel" %}
-      - openblas %gcc {{openmp}}
-      - scalapack +debug %gcc  ^openmpi ^openblas {{openmp}}
-      - belos +mpi {{openmp}} +lapack %{{compiler}} ^openmpi ^openblas%gcc{{openmp}}
+      - openblas {{openmp}} %intel
+      - scalapack +debug %intel  ^{{mpilib}} ^openblas {{openmp}}
+      - belos +mpi {{openmp}} +lapack %{{compiler}} ^{{mpilib}} ^openblas {{openmp}}
 {% else %}
       - openblas %{{compiler}} {{openmp}}
-      - scalapack +debug %{{compiler}}  ^openmpi ^openblas {{openmp}}
-      - belos +mpi {{openmp}} +lapack %{{compiler}} ^openmpi ^openblas {{openmp}}
+      - scalapack +debug %{{compiler}}  ^{{mpilib}} ^openblas {{openmp}}
+      - belos +mpi {{openmp}} +lapack %{{compiler}} ^{{mpilib}} ^openblas {{openmp}}
 {% endif %}
       - >
         boost %{{compiler}}
