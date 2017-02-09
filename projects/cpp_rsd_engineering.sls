@@ -3,6 +3,11 @@
 {% set project = sls.split('.')[-1] %}
 {% set workspace = salt['funwith.workspace'](project) %}
 
+{{project}} spack packages:
+  spack.installed:
+    - pkgs: &spack_packages
+    - openmpi %clang
+
 {{workspace}}/{{python}}:
   virtualenv.managed:
     - python: {{python}}
@@ -25,6 +30,7 @@ UCL-RITS/research-computing-with-cpp:
 
 {{project}}:
   funwith.modulefile:
+    - spack: *spack_packages
     - cwd: {{workspace}}/src/{{project}}
     - virtualenv: {{workspace}}/{{python}}
 
@@ -39,6 +45,10 @@ UCL-RITS/research-computing-with-cpp:
   pkg.installed:
     - name: insighttoolkit
     - tap: homebrew/science
+
+{{project}} liquid:
+  gem.installed:
+    - name: liquid
 
 {{project}} jekyll:
   gem.installed:
