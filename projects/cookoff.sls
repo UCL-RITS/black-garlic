@@ -15,7 +15,7 @@ UCL/GreatCMakeCookoff:
     - target: {{workspace}}/src/{{project}}
     - unless: test -d {{workspace}}/src/{{project}}/.git
 
-dcprogs:
+{{project}}:
   funwith.modulefile:
     - virtualenv: {{workspace}}/{{python}}
     - cwd: {{workspace}}/src/{{project}}
