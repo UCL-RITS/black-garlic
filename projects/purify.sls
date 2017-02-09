@@ -11,7 +11,7 @@
       - openmpi %{{compiler}}
       - fftw %{{compiler}} {{openmp}}
       - gbenchmark %{{compiler}}
-      - Catch %{{compiler}}
+      - catch %{{compiler}}
       - spdlog %{{compiler}}
       - wcslib %{{compiler}}
       - cfitsio %{{compiler}}
