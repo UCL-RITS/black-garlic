@@ -6,14 +6,14 @@
 {{project}} spack packages:
   spack.installed:
     - pkgs: &spack_packages
-      # - GreatCMakeCookoff
+      - GreatCMakeCookoff
       - openmpi %{{compiler}}
       - eigen -fftw -metis -mpfr -scotch -suitesparse %{{compiler}}
       - gbenchmark %{{compiler}}
-      - Catch %{{compiler}}
+      - catch %{{compiler}}
       - spdlog %{{compiler}}
 {% if compiler == "intel" %}
-      - mkl %{{compiler}}
+      - openblas %gcc
 {% else %}
       - openblas %{{compiler}}
 {% endif %}
