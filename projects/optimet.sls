@@ -18,12 +18,12 @@ belos spack packages:
 {{project}} spack packages:
   spack.installed:
     - pkgs: &spack_packages
-      - GreatCMakeCookoff
+      # - GreatCMakeCookoff
       - eigen -fftw -metis -mpfr -scotch -suitesparse %{{compiler}}
       - f2c %{{compiler}}
       - gsl %{{compiler}}
       - hdf5 -fortran -cxx -mpi %{{compiler}}
-      - Catch %{{compiler}}
+      - catch %{{compiler}}
       - {{mpilib}} %{{compiler}}
       - gbenchmark %{{compiler}}
 {% if compiler == "intel" %}
@@ -84,6 +84,17 @@ belos spack packages:
     - contents: |
         YAML
         DataFrames
+        GR
+        PlotlyJS
+        Plots
+        StatPlots
+        IJulia
+        Unitful
+        UnicodePlots
+        DocOpt
+        Query
+        InspectDR
+        GLM
     - makedirs: True
 
 JuliaLang/METADATA.jl:
