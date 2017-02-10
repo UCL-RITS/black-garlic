@@ -1,13 +1,14 @@
-{% set compiler = salt['pillar.get']('compiler', 'gcc') %}
-{% set python = salt['pillar.get']('python', 'python2') %}
-{% set project = sls.split('.')[-1] %}
-{% set workspace = salt['funwith.workspace'](project) %}
+{% set compiler = salt["pillar.get"]("compiler", "gcc") %}
+{% set python = salt["pillar.get"]("python", "python3") %}
+{% set mpilib = salt["pillar.get"]("mpi", "openmpi")  %}
+{% set project = sls.split(".")[-1] %}
+{% set workspace = salt["funwith.workspace"](project) %}
 
 {{project}} spack packages:
   spack.installed:
     - pkgs: &spack_packages
       - GreatCMakeCookoff
-      - openmpi %{{compiler}}
+      - {{mpilib}} %{{compiler}}
       - eigen -fftw -metis -mpfr -scotch -suitesparse %{{compiler}}
       - gbenchmark %{{compiler}}
       - catch %{{compiler}}

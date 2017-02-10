@@ -1,11 +1,11 @@
 {% set compiler = salt["pillar.get"]("compiler", "gcc") %}
 {% set python = salt["pillar.get"]("python", "python3") %}
+{% set mpilib = salt["pillar.get"]("mpi", "openmpi")  %}
 {% set project = sls.split(".")[-1] %}
 {% set workspace = salt["funwith.workspace"](project) %}
 
 {% set openmp = "-openmp" if compiler != "clang" else "-openmp"%}
 {% set ldflags = salt["file.find"](path="/usr/local/Cellar/gcc/*/lib/gcc/[0123456789]", maxdepth=1, name="libgfortran.dylib")[0] %}
-{% set mpilib = "openmpi" %}
 
 {% if compiler == "clang" %}
 belos spack packages:
