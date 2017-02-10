@@ -1,12 +1,13 @@
 {% set compiler = salt['pillar.get']('compiler', 'gcc') %}
-{% set python = salt['pillar.get']('python', 'python2') %}
+{% set python = salt['pillar.get']('python', 'python3') %}
+{% set mpilib = salt['pillar.get']('mpi', 'openmpi') %}
 {% set project = sls.split('.')[-1] %}
 {% set workspace = salt['funwith.workspace'](project) %}
 
 {{project}} spack packages:
   spack.installed:
     - pkgs: &spack_packages
-    - openmpi %clang
+      - {{mpilib}} %{{compiler}}
 
 {{workspace}}/{{python}}:
   virtualenv.managed:
@@ -57,3 +58,31 @@ UCL-RITS/research-computing-with-cpp:
 {{project}} redcarpet:
   gem.installed:
     - name: redcarpet
+
+{{workspace}}/julia/v0.5/REQUIRE:
+  file.managed:
+    - contents: |
+        DataFrames
+        FactCheck
+        FixedSizeArrays
+        Cxx
+        IJulia
+    - makedirs: True
+
+julia metadir:
+  github.latest:
+    - name: JuliaLang/METADATA.jl
+    - target: {{workspace}}/julia/v0.5/METADATA
+    - force_fetch: True
+
+update julia packages:
+  cmd.run:
+    - name: julia -e "Pkg.resolve()"
+    - env:
+      - JULIA_PKGDIR: {{workspace}}/julia
+      - JUPYTER: {{workspace}}/bin/jupyter
+
+add to modulefile:
+  file.append:
+    - name: {{salt['funwith.defaults']('modulefiles')}}/{{project}}.lua
+    - text: setenv("JULIA_PKGDIR", "{{workspace}}/julia")
