@@ -32,7 +32,7 @@ UCL-RITS/rcps-buildscripts:
 
 {{workspace}}:
   virtualenv.managed:
-    - python: python2
+    - python: {{salt['spack.python_exec']("2")}}
     - use_wheel: True
     - pip_upgrade: True
     - pip_pkgs:

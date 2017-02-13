@@ -1,5 +1,5 @@
 {% set compiler = salt["spack.compiler"]() %}
-{% set python = salt['pillar.get']('python', 'python3') %}
+{% set python = salt['pillar.python']() %}
 {% set workspace = salt['funwith.workspace'](project) %}
 {% set pyver = python[:-1] + "@" + python[-1] %}
 
@@ -21,7 +21,7 @@ spack packages:
 {{project}} virtualenv:
   virtualenv.managed:
     - name: {{workspace}}/{{python}}
-    - python: {{python}}
+    - python: {{salt['spack.python_exec']()}}
     - use_wheel: True
     - pip_upgrade: True
     - pip_pkgs: [pip, numpy, scipy, pytest, pandas, cython, jupyter, mako]

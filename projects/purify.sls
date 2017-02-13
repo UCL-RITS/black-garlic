@@ -1,10 +1,13 @@
 {% set compiler = salt["spack.compiler"]() %}
-{% set python = salt['pillar.get']('python', 'python3') %}
+{% set python = salt['spack.python']() %}
 {% set project = sls.split('.')[-1] %}
 {% set workspace = salt['funwith.workspace'](project) %}
-{% set pyver = python[:-1] + "@" + python[-1] %}
 
-{% set openmp = "+openmp" if compiler != "clang" else "-openmp" %}
+{% set openmp = "+openmp" if "clang" not in compiler else "-openmp" %}
+{% set boost = ("+python+singlethreaded~mpi~multithreaded" +
+               "~program_options~random~regex~serialization~signals" +
+               "~system~test~thread~wave ^{}").format(python) %}
+
 {{project}} spack packages:
   spack.installed:
     - pkgs: &spack_packages
@@ -19,26 +22,13 @@
 {% if compiler != "intel" %}
       - openblas %{{compiler}} {{openmp}}
 {% endif %}
-      - >
-        boost %{{compiler}}
-        +python  +singlethreaded
-        -mpi -multithreaded -program_options -random -regex -serialization
-        -signals -system -test -thread -wave
-        ^{{pyver}}
-     # - >
-     #   casacore %{{compiler}} +python +fftw
-     #   ^boost %{{compiler}}
-     #    +python  +singlethreaded
-     #    -mpi -multithreaded -program_options -random -regex -serialization
-     #    -signals -system -test -thread -wave
-     #   ^fftw {{openmp}}
-     #   ^openblas {{openmp}}
+      - boost %{{compiler}} {{boost}}
 
 
 {{project}} virtualenv:
   virtualenv.managed:
      - name: {{workspace}}/{{python}}
-     - python: {{python}}
+     - python: {{salt['spack.python_exec']()}}
      - use_wheel: True
      - pip_upgrade: True
      - pip_pkgs: [pip, numpy, scipy, pytest, pandas, cython, jupyter]
@@ -87,10 +77,10 @@ astro-informatics/sopt:
   file.directory
 
 
-{{workspace}}/data/WSRT_Measures:
-  archive.extracted:
-    - source: ftp://ftp.astron.nl/outgoing/Measures/WSRT_Measures.ztar
-    - source_hash: md5=69d0e8aa479585f1be65be2ca51a9e25
-    - archive_format: tar
-    - tar_options: z
-    - if_missing: {{workspace}}/data/WSRT_Measures/ephemerides
+# {{workspace}}/data/WSRT_Measures:
+#   archive.extracted:
+#     - source: ftp://ftp.astron.nl/outgoing/Measures/WSRT_Measures.ztar
+#     - source_hash: md5=69d0e8aa479585f1be65be2ca51a9e25
+#     - archive_format: tar
+#     - tar_options: z
+#     - if_missing: {{workspace}}/data/WSRT_Measures/ephemerides

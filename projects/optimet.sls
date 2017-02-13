@@ -1,5 +1,5 @@
 {% set compiler = salt["pillar.get"]("compiler", "gcc") %}
-{% set python = salt["pillar.get"]("python", "python3") %}
+{% set python = salt['spack.python']() %}
 {% set mpilib = salt["pillar.get"]("mpi", "openmpi")  %}
 {% set project = sls.split(".")[-1] %}
 {% set workspace = salt["funwith.workspace"](project) %}
@@ -44,7 +44,7 @@ belos spack packages:
 
 {{workspace}}/{{python}}:
   virtualenv.managed:
-    - python: {{python}}
+    - python: {{salt['spack.python_exec']()}}
     - use_wheel: True
     - pip_upgrade: True
     - pip_pkgs: [pip, numpy, scipy, pandas, jupyter, ipywidgets, invoke, paramiko, py]
