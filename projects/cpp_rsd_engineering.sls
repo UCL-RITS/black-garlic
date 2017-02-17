@@ -7,7 +7,7 @@
 {{project}} spack packages:
   spack.installed:
     - pkgs: &spack_packages
-    - {{mpilib}} %{{compiler}}
+      - {{mpilib}} %{{compiler}}
 
 {{workspace}}/{{python}}:
   virtualenv.managed:
