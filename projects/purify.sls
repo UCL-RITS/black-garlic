@@ -4,7 +4,7 @@
 {% set workspace = salt['funwith.workspace'](project) %}
 {% set pyver = python[:-1] + "@" + python[-1] %}
 
-{% set openmp = "+openmp" if compiler != "clang" else "-openmp" %}
+{% set openmp = "+openmp" if "clang" not in compiler else "-openmp" %}
 {{project}} spack packages:
   spack.installed:
     - pkgs: &spack_packages
