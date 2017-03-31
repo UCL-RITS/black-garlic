@@ -18,7 +18,6 @@
       - spdlog %{{compiler}}
       - wcslib %{{compiler}}
       - cfitsio %{{compiler}}
-      - bison %{{compiler}}
 {% if compiler != "intel" %}
       - openblas %{{compiler}} {{openmp}}
 {% endif %}
